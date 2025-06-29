@@ -3,21 +3,35 @@
 export function validateCustomer(customer, existingCustomers) {
     const errors = [];
 
-    // TODO: Implementar a validação de Presença
-    // Dica: Verifique se os campos name, username, email e cpf não são vazios.
-    // Se um campo for vazio, adicione uma mensagem como "O campo 'nome' é obrigatório." ao array 'errors'.
+    // Validação de Presença
+    if (!customer.name || customer.name.trim() === "") {
+        errors.push("O campo 'nome' é obrigatório.");
+    }
+    if (!customer.username || customer.username.trim() === "") {
+        errors.push("O campo 'username' é obrigatório.");
+    }
+    if (!customer.email || customer.email.trim() === "") {
+        errors.push("O campo 'email' é obrigatório.");
+    }
+    if (!customer.cpf || customer.cpf.trim() === "") {
+        errors.push("O campo 'cpf' é obrigatório.");
+    }
 
+    // Validação de Formato do E-mail
+    if (customer.email && !customer.email.includes("@")) {
+        errors.push("O formato do e-mail é inválido.");
+    }
 
-    // TODO: Implementar a validação de Formato do E-mail
-    // Dica: Verifique se o campo email contém o caractere '@'.
-    // Se não contiver, adicione a mensagem "O formato do e-mail é inválido." ao array 'errors'.
-
-
-    // TODO: Implementar a validação de Unicidade
-    // Dica: Use o array 'existingCustomers' para verificar se o username, email ou cpf já existem.
-    // Use funções como .some() ou .find().
-    // Se um valor já existir, adicione mensagens como "Username já cadastrado." ao array 'errors'.
-
+    // Validação de Unicidade
+    if (existingCustomers.some(c => c.username === customer.username)) {
+        errors.push("Username já cadastrado.");
+    }
+    if (existingCustomers.some(c => c.email === customer.email)) {
+        errors.push("E-mail já cadastrado.");
+    }
+    if (existingCustomers.some(c => c.cpf === customer.cpf)) {
+        errors.push("CPF já cadastrado.");
+    }
 
     return errors;
 }
